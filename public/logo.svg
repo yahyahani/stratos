@@ -1,40 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Gradient runs bottom-left (blue) → top-right (purple) -->
-    <linearGradient id="g" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#3B82F6"/>
-      <stop offset="48%"  stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
+    <linearGradient id="stratosGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
     </linearGradient>
   </defs>
-
-  <!--
-    Four stacked atmospheric arcs, widest at bottom → narrowest at top.
-    Suggests stratospheric altitude layers / wind bands.
-    Stroke weight decreases with height, reinforcing the tapering effect.
-  -->
-
-  <!-- Layer 1 — ground level, widest -->
-  <path
-    d="M2 38 C 10 33 38 43 46 38"
-    stroke="url(#g)" stroke-width="3.6" stroke-linecap="round"
-  />
-
-  <!-- Layer 2 -->
-  <path
-    d="M5 30 C 12 25 36 35 43 30"
-    stroke="url(#g)" stroke-width="3.0" stroke-linecap="round"
-  />
-
-  <!-- Layer 3 -->
-  <path
-    d="M9 22 C 15 17 33 27 39 22"
-    stroke="url(#g)" stroke-width="2.4" stroke-linecap="round"
-  />
-
-  <!-- Layer 4 — stratosphere, narrowest -->
-  <path
-    d="M14 15 C 19 10 29 20 34 15"
-    stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"
-  />
+  <rect x="0" y="0" width="180" height="180" rx="36" fill="url(#stratosGradient)"/>
+  <circle cx="90" cy="90" r="46" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.5"/>
+  <circle cx="90" cy="90" r="30" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.75"/>
+  <circle cx="90" cy="90" r="14" fill="#ffffff"/>
 </svg>

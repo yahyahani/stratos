@@ -78,10 +78,15 @@ export default function ChatPage() {
           {messages.length === 0 && (
             <div className="flex flex-col items-center text-center pt-14 pb-8 animate-fade-in">
               {/* Hero logo */}
-              <div className="relative mb-6">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-600/10 dark:from-blue-500/20 dark:via-indigo-500/15 dark:to-purple-600/20 border border-white/60 dark:border-white/10 flex items-center justify-center shadow-[0_0_32px_rgba(99,102,241,0.18)] dark:shadow-[0_0_40px_rgba(99,102,241,0.30)] backdrop-blur-sm">
-                  <Image src="/logo.svg" alt="Stratos" width={48} height={48} priority />
-                </div>
+              <div className="relative mb-6 inline-block">
+                <Image
+                  src="/logo.svg"
+                  alt="Stratos"
+                  width={76}
+                  height={76}
+                  priority
+                  className="drop-shadow-[0_0_28px_rgba(99,102,241,0.40)] dark:drop-shadow-[0_0_36px_rgba(99,102,241,0.55)]"
+                />
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 border-2 border-white dark:border-[#07080F] shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
               </div>
 

@@ -34,9 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Image
                   src="/logo.svg"
                   alt="Stratos logo"
-                  width={28}
-                  height={28}
+                  width={30}
+                  height={30}
                   priority
+                  className="rounded-lg"
                 />
                 <span className="font-semibold text-sm tracking-tight fg-1">
                   Stratos
