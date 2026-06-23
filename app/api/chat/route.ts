@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { getWeather } from '@/lib/weather';
 import { getTime } from '@/lib/time';
 import { calculate } from '@/lib/calculator';
+import { webSearch } from '@/lib/search';
 import { addLog } from '@/lib/store';
 import type { LogEntry, Message, ToolCall } from '@/types';
 import { randomUUID } from 'crypto';
@@ -35,6 +36,23 @@ const TOOLS: Anthropic.Tool[] = [
     },
   },
   {
+    name: 'web_search',
+    description:
+      'Search the web for factual information using DuckDuckGo Instant Answers. ' +
+      'Best for: definitions, well-known facts, people, places, and general knowledge. ' +
+      'Returns a summary and related topics. Not suitable for very recent news.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Search query, e.g. "Python programming language", "Eiffel Tower height"',
+        },
+      },
+      required: ['query'],
+    },
+  },
+  {
     name: 'calculate',
     description:
       'Evaluate mathematical expressions and unit conversions safely (no eval). ' +
@@ -57,7 +75,8 @@ const SYSTEM_PROMPT = `You are Stratos, a helpful AI assistant with access to re
 - get_weather: current weather for any city
 - get_time: current local time in any city (DST-aware)
 - calculate: math expressions and unit conversions (e.g. "15% * 42", "5 km to mi", "37 degC to degF")
-Always use the appropriate tool when the user asks for live data or calculations. Be concise and conversational.`;
+- web_search: factual web search via DuckDuckGo (definitions, knowledge, facts)
+Always use the appropriate tool when the user asks for live data, calculations, or facts. Be concise and conversational.`;
 
 export async function POST(req: NextRequest) {
   const { messages }: { messages: Message[] } = await req.json();
@@ -109,6 +128,10 @@ export async function POST(req: NextRequest) {
           } else if (block.name === 'get_time') {
             const { city } = block.input as { city: string };
             const data = await getTime(city);
+            output = JSON.stringify(data);
+          } else if (block.name === 'web_search') {
+            const { query } = block.input as { query: string };
+            const data = await webSearch(query);
             output = JSON.stringify(data);
           } else if (block.name === 'calculate') {
             const { expression } = block.input as { expression: string };

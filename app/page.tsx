@@ -8,7 +8,7 @@ const SUGGESTIONS = [
   { icon: '🌧️', text: "What's the weather in Amsterdam?" },
   { icon: '🕐', text: 'Hoe laat is het nu in Tokyo?' },
   { icon: '🧮', text: 'Hoeveel is 15% fooi op €42?' },
-  { icon: '📐', text: 'Convert 180 cm to feet and inches' },
+  { icon: '🔍', text: 'What is the Stratos atmosphere layer?' },
 ];
 
 export default function ChatPage() {
