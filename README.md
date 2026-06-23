@@ -1,8 +1,7 @@
 <p align="center">
-  <img src="public/logo.svg" width="64" height="64" alt="Stratos logo" />
+  <img src="public/logo.svg" width="72" height="72" alt="Stratos logo" /><br/>
+  <strong style="font-size:2em">Stratos</strong>
 </p>
-
-<h1 align="center">Stratos</h1>
 
 <p align="center">
   AI agent met live tool calling — vraag naar het weer overal ter wereld.<br/>
@@ -21,22 +20,30 @@
 
 ## Screenshots
 
-| Dark mode | Light mode |
-|:---------:|:----------:|
-| ![Stratos dark mode](docs/screenshots/chat-dark.png) | ![Stratos light mode](docs/screenshots/chat-light.png) |
+### Chat
+
+| Light mode | Dark mode |
+|:----------:|:---------:|
+| ![Chat light mode](docs/screenshots/chat-light.png) | ![Chat dark mode](docs/screenshots/chat-dark.png) |
+
+### Dashboard
+
+| Light mode | Dark mode |
+|:----------:|:---------:|
+| ![Dashboard light mode](docs/screenshots/dashboard-light.png) | ![Dashboard dark mode](docs/screenshots/dashboard-dark.png) |
 
 ---
 
 ## Features
 
 ### Tool calling met agentic loop
-De agent gebruikt `claude-opus-4-8` met adaptive thinking. Bij een vraag over het weer roept hij automatisch de `get_weather` tool aan (via [Open-Meteo](https://open-meteo.com/) — geen API key nodig), bekijkt het resultaat, en beslist of hij meer tools nodig heeft voordat hij antwoordt. De loop draait server-side en ondersteunt tot 10 opeenvolgende tool calls per beurt.
+De agent gebruikt `claude-opus-4-8` met adaptive thinking. Bij een vraag over het weer roept hij automatisch de `get_weather` tool aan via [Open-Meteo](https://open-meteo.com/) (gratis, geen API key), bekijkt het resultaat, en beslist of hij meer tools nodig heeft voordat hij antwoordt. De loop draait server-side en ondersteunt tot 10 opeenvolgende tool calls per beurt.
 
 ### Logs dashboard
-Elke conversatie wordt opgeslagen in een in-memory log en getoond in een driekoloms-dashboard:
+Elke conversatie wordt opgeslagen in een in-memory log en getoond in een driekoloms-layout:
 - **Sidebar** — totaaloverzicht (gesprekken, tool calls, gemiddelde duur), tool usage breakdown met progress bars, en filteropties
-- **Loglijst** — chronologische lijst met preview van de gebruikersvraag, timestamp, en tool-badge
-- **Detailpaneel** — volledige weergave met user message, alle tool calls (input + output), en het assistant-antwoord
+- **Loglijst** — chronologische lijst met preview van de gebruikersvraag, timestamp en tool-badge
+- **Detailpaneel** — volledige weergave met user message, alle tool calls (input + output) en het assistant-antwoord
 
 ### Dark / light mode
 Systeemvoorkeur wordt gedetecteerd bij het eerste bezoek. De toggle wisselt direct, zonder flash, dankzij een inline script in `<head>` dat voor React-hydration uitvoert. Alle tekstkleuren zijn CSS custom properties:
@@ -48,14 +55,13 @@ Systeemvoorkeur wordt gedetecteerd bij het eerste bezoek. De toggle wisselt dire
 | `--fg-3` | `#64748b` | `#8B9CC8` | **4.5 : 1 — WCAG AA** |
 
 ### Animated gradient mesh
-Het hero-scherm heeft drie langzaam drijvende radial-gradient blobs (blauw, paars, cyaan) als achtergrond, puur via CSS `@keyframes` — geen canvas, geen JS. In light mode subtiel (13% opacity), in dark mode rijker (26%). De blobs verdwijnen zodra het gesprek begint.
+Het hero-scherm heeft drie langzaam drijvende radial-gradient blobs (blauw, paars, cyaan) als achtergrond, puur via CSS `@keyframes` — geen canvas of JS. In light mode subtiel (13% opacity), in dark mode rijker (26%). De blobs verdwijnen zodra het gesprek begint.
 
 ---
 
 ## Setup
 
 ### Vereisten
-
 - Node.js ≥ 20
 - Een [Anthropic API key](https://console.anthropic.com/)
 
@@ -85,8 +91,7 @@ docker compose up --build
 De `ANTHROPIC_API_KEY` wordt pas ingelezen bij het starten van de container — hij wordt **nooit** in de image gebakken.
 
 ```bash
-# stoppen
-docker compose down
+docker compose down   # stoppen
 ```
 
 ---
@@ -111,9 +116,9 @@ lib/
 types/
   index.ts              # Message, ToolCall, LogEntry
 public/
-  logo.svg              # Stratos logo — gestapelde atmosferische lagen
+  logo.svg              # Stratos logo
 docs/
-  screenshots/          # chat-dark.png, chat-light.png
+  screenshots/          # chat-light/dark, dashboard-light/dark
 Dockerfile              # Multi-stage build (deps → builder → runner)
 docker-compose.yml      # Leest ANTHROPIC_API_KEY uit .env.local
 ```
