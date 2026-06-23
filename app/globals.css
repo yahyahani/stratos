@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   CSS custom properties — one pair per theme.
+   :root = light (the default).
+   .dark  = toggled by ThemeProvider on <html>.
+
+   Contrast ratios on their respective backgrounds:
+     --fg-1  17.1:1  WCAG AAA
+     --fg-2   9.9:1  WCAG AA
+     --fg-3   4.5:1  WCAG AA (minimum)
+───────────────────────────────────────────── */
+@layer base {
+  :root {
+    --fg-1: #0f172a;   /* slate-900 */
+    --fg-2: #334155;   /* slate-700 */
+    --fg-3: #64748b;   /* slate-500 */
+    --bg-base: #f8fafc;
+  }
+  .dark {
+    --fg-1: #E8EEFF;
+    --fg-2: #A8B8E0;
+    --fg-3: #8B9CC8;
+    --bg-base: #07080F;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--fg-1);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  /* Remove .dark body — CSS variables above handle it. */
+
+  /* Slim scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.13);
+  }
+  .dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.10); }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.22); }
+  .dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.18); }
+}
+
+@layer utilities {
+  /* ── Text colour hierarchy (uses CSS variables, respects :root / .dark) ── */
+  .fg-1 { color: var(--fg-1); }
+  .fg-2 { color: var(--fg-2); }
+  .fg-3 { color: var(--fg-3); }
+  /* Hover variants — use class="fg-2 hover-fg-1" in JSX */
+  .hover-fg-1:hover { color: var(--fg-1); }
+  .hover-fg-2:hover { color: var(--fg-2); }
+
+  /* ── Glass panels ───────────────────────── */
+  .glass {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .dark .glass {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: none;
+  }
+
+  .glass-nav {
+    background: rgba(248, 250, 252, 0.94);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  }
+  .dark .glass-nav {
+    background: rgba(7, 8, 15, 0.80);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .glass-input {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .dark .glass-input {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-input:focus {
+    border-color: rgba(99, 102, 241, 0.55);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+    outline: none;
+  }
+
+  /* Dashboard sidebar */
+  .sidebar {
+    background: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .dark .sidebar {
+    background: rgba(255, 255, 255, 0.018);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Panel borders used inline in dashboard */
+  .panel-border-r { border-right: 1px solid rgba(0, 0, 0, 0.08); }
+  .dark .panel-border-r { border-right: 1px solid rgba(255, 255, 255, 0.06); }
+
+  .panel-border-b { border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+  .dark .panel-border-b { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+
+  /* ── Gradient text ──────────────────────── */
+  .gradient-text {
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Glow cards ─────────────────────────── */
+  .glow-blue {
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.14),
+                0 4px 20px rgba(59, 130, 246, 0.10);
+  }
+  .dark .glow-blue {
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.18),
+                0 4px 28px rgba(59, 130, 246, 0.16),
+                0 1px 0 rgba(59, 130, 246, 0.08) inset;
+  }
+  .glow-green {
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.14),
+                0 4px 20px rgba(16, 185, 129, 0.10);
+  }
+  .dark .glow-green {
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.18),
+                0 4px 28px rgba(16, 185, 129, 0.14),
+                0 1px 0 rgba(16, 185, 129, 0.08) inset;
+  }
+  .glow-purple {
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.14),
+                0 4px 20px rgba(139, 92, 246, 0.10);
+  }
+  .dark .glow-purple {
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.18),
+                0 4px 28px rgba(139, 92, 246, 0.14),
+                0 1px 0 rgba(139, 92, 246, 0.08) inset;
+  }
+  .hover-glow-blue:hover {
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.22),
+                0 4px 28px rgba(59, 130, 246, 0.16);
+  }
+
+  /* ── Buttons ─────────────────────────────── */
+  .btn-gradient {
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
+    box-shadow: 0 2px 16px rgba(99, 102, 241, 0.35);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-gradient:hover:not(:disabled) {
+    box-shadow: 0 4px 24px rgba(99, 102, 241, 0.50);
+    transform: translateY(-1px);
+  }
+  .btn-gradient:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.30);
+  }
+  .btn-gradient:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-ghost {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    transition: all 0.15s ease;
+  }
+  .dark .btn-ghost {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .btn-ghost:hover {
+    background: rgba(0, 0, 0, 0.07);
+    border-color: rgba(0, 0, 0, 0.14);
+  }
+  .dark .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  /* ── Typography ──────────────────────────── */
+  .label-caps {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #64748b;        /* light: slate-500 — 4.5:1 on #f8fafc */
+  }
+  .dark .label-caps {
+    color: rgba(139, 156, 200, 0.70);
+  }
+
+  /* ── Dividers ────────────────────────────── */
+  .divider { border-color: rgba(0, 0, 0, 0.09); }
+  .dark .divider { border-color: rgba(255, 255, 255, 0.06); }
+}
+
+/* Bounce dot stagger */
+.bounce-dot:nth-child(1) { animation-delay:   0ms; }
+.bounce-dot:nth-child(2) { animation-delay: 160ms; }
+.bounce-dot:nth-child(3) { animation-delay: 320ms; }
