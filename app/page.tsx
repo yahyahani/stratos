@@ -7,8 +7,8 @@ import type { Message } from '@/types';
 const SUGGESTIONS = [
   { icon: '🌧️', text: "What's the weather in Amsterdam?" },
   { icon: '🕐', text: 'Hoe laat is het nu in Tokyo?' },
-  { icon: '🌍', text: 'Compare weather in London and Paris' },
-  { icon: '🗓️', text: 'What time is it in New York and Sydney?' },
+  { icon: '🧮', text: 'Hoeveel is 15% fooi op €42?' },
+  { icon: '📐', text: 'Convert 180 cm to feet and inches' },
 ];
 
 export default function ChatPage() {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { getWeather } from '@/lib/weather';
 import { getTime } from '@/lib/time';
+import { calculate } from '@/lib/calculator';
 import { addLog } from '@/lib/store';
 import type { LogEntry, Message, ToolCall } from '@/types';
 import { randomUUID } from 'crypto';
@@ -33,12 +34,30 @@ const TOOLS: Anthropic.Tool[] = [
       required: ['city'],
     },
   },
+  {
+    name: 'calculate',
+    description:
+      'Evaluate mathematical expressions and unit conversions safely (no eval). ' +
+      'Supports arithmetic, functions (sqrt, sin, log, etc.), percentages, and unit conversions ' +
+      '(km↔mi, kg↔lbs, °C↔°F, etc.). Examples: "15% * 42", "5 km to mi", "37 degC to degF", "sqrt(144)".',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        expression: {
+          type: 'string',
+          description: 'Math expression or unit conversion, e.g. "15% * 42", "5 km to mi", "37 degC to degF"',
+        },
+      },
+      required: ['expression'],
+    },
+  },
 ];
 
 const SYSTEM_PROMPT = `You are Stratos, a helpful AI assistant with access to real-time tools.
 - get_weather: current weather for any city
 - get_time: current local time in any city (DST-aware)
-Always use the appropriate tool when the user asks for live data. Be concise and conversational.`;
+- calculate: math expressions and unit conversions (e.g. "15% * 42", "5 km to mi", "37 degC to degF")
+Always use the appropriate tool when the user asks for live data or calculations. Be concise and conversational.`;
 
 export async function POST(req: NextRequest) {
   const { messages }: { messages: Message[] } = await req.json();
@@ -90,6 +109,10 @@ export async function POST(req: NextRequest) {
           } else if (block.name === 'get_time') {
             const { city } = block.input as { city: string };
             const data = await getTime(city);
+            output = JSON.stringify(data);
+          } else if (block.name === 'calculate') {
+            const { expression } = block.input as { expression: string };
+            const data = calculate(expression);
             output = JSON.stringify(data);
           } else {
             output = JSON.stringify({ error: `Unknown tool: ${block.name}` });
