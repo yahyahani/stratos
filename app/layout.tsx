@@ -8,8 +8,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'AI Agent Dashboard',
-  description: 'Chat with an AI agent using tool calling',
+  title: 'Stratos',
+  description: 'AI agent with live tool calling — ask about real-time weather anywhere in the world',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </div>
                 </div>
                 <span className="font-semibold text-sm tracking-tight fg-1">
-                  AI Agent Dashboard
+                  Stratos
                 </span>
               </div>
 

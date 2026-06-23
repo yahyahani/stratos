@@ -75,13 +75,13 @@ export default function ChatPage() {
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 border-2 border-white dark:border-[#07080F] shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
               </div>
 
-              <h1 className="text-xl font-semibold mb-1 fg-1">
-                AI Agent with Tool Calling
+              <h1 className="text-3xl font-bold mb-2 fg-1 tracking-tight">
+                Stratos
               </h1>
               <p className="text-[13px] fg-3 mb-8 max-w-sm">
-                Powered by{' '}
+                AI agent met live tool calling, powered by{' '}
                 <span className="gradient-text font-semibold">claude-opus-4-8</span>
-                {' '}— ask about real-time weather anywhere in the world
+                {' '}— vraag naar het weer overal ter wereld
               </p>
 
               {/* Suggestion grid */}
