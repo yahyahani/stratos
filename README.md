@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  AI agent met live tool calling — vraag naar het weer overal ter wereld.<br/>
+  AI agent met live tool calling — weer, tijd, rekenen en zoeken, direct vanuit de chat.<br/>
   Gebouwd op Next.js 15 met Claude claude-opus-4-8 en een volledig logs-dashboard.
 </p>
 
@@ -37,7 +37,16 @@
 ## Features
 
 ### Tool calling met agentic loop
-De agent gebruikt `claude-opus-4-8` met adaptive thinking. Bij een vraag over het weer roept hij automatisch de `get_weather` tool aan via [Open-Meteo](https://open-meteo.com/) (gratis, geen API key), bekijkt het resultaat, en beslist of hij meer tools nodig heeft voordat hij antwoordt. De loop draait server-side en ondersteunt tot 10 opeenvolgende tool calls per beurt.
+De agent gebruikt `claude-opus-4-8` met adaptive thinking. Hij beschikt over vier tools:
+
+| Tool | Wat het doet | Bron |
+|------|--------------|------|
+| `get_weather` | Actueel weer voor elke stad (temperatuur, wind, beschrijving) | [Open-Meteo](https://open-meteo.com/) — gratis, geen API key |
+| `get_time` | Huidige lokale datum & tijd voor elke stad, DST-correct | [Open-Meteo geocoding](https://open-meteo.com/) + [Luxon](https://moment.github.io/luxon/) |
+| `calculate` | Wiskundige expressies en eenheden-conversies (`15% * 42`, `5 km to mi`, `37 degC to degF`) | [mathjs](https://mathjs.org/) — geen `eval()` |
+| `web_search` | Feitelijke zoekopdrachten (definities, encyclopedische kennis, algemene feiten) | [DuckDuckGo Instant Answers](https://duckduckgo.com/api) — gratis, geen API key |
+
+Bij een vraag roept de agent automatisch de juiste tool(s) aan, bekijkt het resultaat, en beslist of hij meer tools nodig heeft voordat hij antwoordt. De loop draait server-side en ondersteunt tot 10 opeenvolgende tool calls per beurt.
 
 ### Logs dashboard
 Elke conversatie wordt opgeslagen in een in-memory log en getoond in een driekoloms-layout:
@@ -113,6 +122,9 @@ components/
 lib/
   store.ts              # In-memory log store (globalThis singleton)
   weather.ts            # Open-Meteo geocoding + forecast
+  time.ts               # Luxon DST-aware timezone lookup
+  calculator.ts         # mathjs safe expression evaluator
+  search.ts             # DuckDuckGo Instant Answers API
 types/
   index.ts              # Message, ToolCall, LogEntry
 public/
@@ -131,7 +143,9 @@ docker-compose.yml      # Leest ANTHROPIC_API_KEY uit .env.local
 |------|-------------|
 | Framework | [Next.js 15](https://nextjs.org/) (App Router, React 19) |
 | AI | [Anthropic SDK](https://github.com/anthropics/anthropic-sdk-typescript) · `claude-opus-4-8` |
-| Weather | [Open-Meteo](https://open-meteo.com/) (gratis, geen API key) |
+| Weer & tijd | [Open-Meteo](https://open-meteo.com/) (gratis, geen API key) |
+| Rekenen | [mathjs](https://mathjs.org/) — veilig, geen `eval()` |
+| Zoeken | [DuckDuckGo Instant Answers](https://duckduckgo.com/api) (gratis, geen API key) |
 | Styling | [Tailwind CSS 3](https://tailwindcss.com/) + CSS custom properties |
 | Taal | TypeScript 5 |
 | Container | Docker multi-stage, `output: 'standalone'`, non-root user |

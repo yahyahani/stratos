@@ -95,8 +95,8 @@ export default function ChatPage() {
               </h1>
               <p className="text-[13px] fg-3 mb-8 max-w-sm">
                 AI agent met live tool calling, powered by{' '}
-                <span className="gradient-text font-semibold">claude-opus-4-8</span>
-                {' '}— vraag naar het weer overal ter wereld
+                <span className="gradient-text font-semibold">Claude Opus 4.8</span>
+                {' '}— weer, tijd, rekenen en zoeken
               </p>
 
               {/* Suggestion grid */}
@@ -171,7 +171,7 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about weather anywhere…"
+            placeholder="Ask about weather, time, calculations, or facts…"
             rows={1}
             className="glass-input flex-1 rounded-xl px-4 py-2.5 resize-none text-sm
               fg-1 placeholder-slate-400 dark:placeholder-[#4A5580]"
