@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -10,6 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Stratos',
   description: 'AI agent with live tool calling — ask about real-time weather anywhere in the world',
+  icons: { icon: '/logo.svg' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -29,12 +31,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
               {/* Logo */}
               <div className="flex items-center gap-2.5">
-                <div className="relative w-7 h-7">
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 blur-sm opacity-50 dark:opacity-70" />
-                  <div className="relative w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
-                    AI
-                  </div>
-                </div>
+                <Image
+                  src="/logo.svg"
+                  alt="Stratos logo"
+                  width={28}
+                  height={28}
+                  priority
+                />
                 <span className="font-semibold text-sm tracking-tight fg-1">
                   Stratos
                 </span>

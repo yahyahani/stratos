@@ -1,41 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
   <defs>
-    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+    <!-- Gradient runs bottom-left (blue) → top-right (purple) -->
+    <linearGradient id="g" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%"   stop-color="#3B82F6"/>
-      <stop offset="50%"  stop-color="#6366F1"/>
+      <stop offset="48%"  stop-color="#6366F1"/>
       <stop offset="100%" stop-color="#8B5CF6"/>
-    </linearGradient>
-    <linearGradient id="eye" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"  stop-color="#BFDBFE"/>
-      <stop offset="100%" stop-color="#E0E7FF"/>
     </linearGradient>
   </defs>
 
-  <!-- Body: rounded square -->
-  <rect x="6" y="14" width="36" height="28" rx="8" fill="url(#grad)"/>
+  <!--
+    Four stacked atmospheric arcs, widest at bottom → narrowest at top.
+    Suggests stratospheric altitude layers / wind bands.
+    Stroke weight decreases with height, reinforcing the tapering effect.
+  -->
 
-  <!-- Antenna base -->
-  <rect x="22" y="6" width="4" height="8" rx="2" fill="url(#grad)"/>
-  <!-- Antenna tip -->
-  <circle cx="24" cy="5" r="3" fill="url(#grad)"/>
+  <!-- Layer 1 — ground level, widest -->
+  <path
+    d="M2 38 C 10 33 38 43 46 38"
+    stroke="url(#g)" stroke-width="3.6" stroke-linecap="round"
+  />
 
-  <!-- Face plate (slightly lighter inset) -->
-  <rect x="10" y="18" width="28" height="18" rx="5" fill="white" fill-opacity="0.12"/>
+  <!-- Layer 2 -->
+  <path
+    d="M5 30 C 12 25 36 35 43 30"
+    stroke="url(#g)" stroke-width="3.0" stroke-linecap="round"
+  />
 
-  <!-- Eyes -->
-  <rect x="13" y="22" width="8" height="7" rx="3" fill="url(#eye)"/>
-  <rect x="27" y="22" width="8" height="7" rx="3" fill="url(#eye)"/>
+  <!-- Layer 3 -->
+  <path
+    d="M9 22 C 15 17 33 27 39 22"
+    stroke="url(#g)" stroke-width="2.4" stroke-linecap="round"
+  />
 
-  <!-- Eye pupils (glow dots) -->
-  <circle cx="17" cy="25.5" r="2" fill="#6366F1" fill-opacity="0.7"/>
-  <circle cx="31" cy="25.5" r="2" fill="#6366F1" fill-opacity="0.7"/>
-
-  <!-- Mouth: three small dots -->
-  <circle cx="18" cy="33" r="1.5" fill="white" fill-opacity="0.55"/>
-  <circle cx="24" cy="33" r="1.5" fill="white" fill-opacity="0.55"/>
-  <circle cx="30" cy="33" r="1.5" fill="white" fill-opacity="0.55"/>
-
-  <!-- Ear bolts -->
-  <circle cx="6"  cy="28" r="3" fill="url(#grad)" stroke="white" stroke-width="1.5" stroke-opacity="0.3"/>
-  <circle cx="42" cy="28" r="3" fill="url(#grad)" stroke="white" stroke-width="1.5" stroke-opacity="0.3"/>
+  <!-- Layer 4 — stratosphere, narrowest -->
+  <path
+    d="M14 15 C 19 10 29 20 34 15"
+    stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"
+  />
 </svg>
