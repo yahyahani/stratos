@@ -217,3 +217,75 @@
 .bounce-dot:nth-child(1) { animation-delay:   0ms; }
 .bounce-dot:nth-child(2) { animation-delay: 160ms; }
 .bounce-dot:nth-child(3) { animation-delay: 320ms; }
+
+/* ─────────────────────────────────────────────
+   Animated gradient mesh — hero section only.
+   Three blurred radial blobs drift slowly with
+   CSS @keyframes. Opacity is lighter in light
+   mode, richer in dark mode.
+───────────────────────────────────────────── */
+:root  { --blob-op: 0.13; }
+.dark  { --blob-op: 0.26; }
+
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Blue blob — top-left */
+.blob-1 {
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle at 40% 40%, #3B82F6 0%, transparent 70%);
+  filter: blur(72px);
+  opacity: var(--blob-op);
+  top: -160px;
+  left: -160px;
+  animation: blob-drift-1 26s ease-in-out infinite alternate;
+}
+
+/* Purple blob — bottom-right */
+.blob-2 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle at 60% 60%, #8B5CF6 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: var(--blob-op);
+  bottom: -80px;
+  right: -120px;
+  animation: blob-drift-2 32s ease-in-out infinite alternate;
+}
+
+/* Cyan blob — centre */
+.blob-3 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle at 50% 50%, #06B6D4 0%, transparent 70%);
+  filter: blur(64px);
+  opacity: calc(var(--blob-op) * 0.75);
+  top: calc(35% - 180px);
+  left: calc(42% - 180px);
+  animation: blob-drift-3 21s ease-in-out infinite alternate;
+}
+
+@keyframes blob-drift-1 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  33%  { transform: translate(48px, -32px) scale(1.06); }
+  66%  { transform: translate(16px,  40px) scale(0.97); }
+  100% { transform: translate(64px,  24px) scale(1.04); }
+}
+
+@keyframes blob-drift-2 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  33%  { transform: translate(-40px, 28px)  scale(0.94); }
+  66%  { transform: translate(-16px, -48px) scale(1.07); }
+  100% { transform: translate(-56px, -20px) scale(0.98); }
+}
+
+@keyframes blob-drift-3 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  50%  { transform: translate(32px, -24px) scale(1.10); }
+  100% { transform: translate(-24px, 32px) scale(0.92); }
+}

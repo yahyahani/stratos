@@ -59,9 +59,18 @@ export default function ChatPage() {
   }
 
   return (
-    <main className="flex flex-col" style={{ height: 'calc(100vh - 56px)' }}>
+    <main className="flex flex-col relative" style={{ height: 'calc(100vh - 56px)' }}>
+      {/* Gradient mesh — only rendered in empty/hero state */}
+      {messages.length === 0 && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <div className="gradient-blob blob-1" />
+          <div className="gradient-blob blob-2" />
+          <div className="gradient-blob blob-3" />
+        </div>
+      )}
+
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto relative z-10">
         <div className="max-w-2xl mx-auto px-4 py-6">
 
           {/* Empty state */}
@@ -150,7 +159,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input bar */}
-      <div className="glass-nav px-4 py-3">
+      <div className="glass-nav px-4 py-3 relative z-10">
         <form onSubmit={handleSubmit} className="max-w-2xl mx-auto flex gap-2.5 items-end">
           <textarea
             value={input}
