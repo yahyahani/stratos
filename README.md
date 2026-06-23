@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="public/logo.svg" width="72" height="72" alt="AI Agent Dashboard logo" />
+  <img src="public/logo.svg" width="64" height="64" alt="Stratos logo" />
 </p>
 
-<h1 align="center">AI Agent Dashboard</h1>
+<h1 align="center">Stratos</h1>
 
 <p align="center">
-  A Next.js 15 app that puts a Claude-powered AI agent in your browser.<br/>
-  Ask questions in the chat, watch it call real tools, and inspect every interaction in the logs dashboard.
+  AI agent met live tool calling — vraag naar het weer overal ter wereld.<br/>
+  Gebouwd op Next.js 15 met Claude claude-opus-4-8 en een volledig logs-dashboard.
 </p>
 
 <p align="center">
@@ -19,49 +19,55 @@
 
 ---
 
-## Features
-
-**Tool calling with an agentic loop**
-The agent uses `claude-opus-4-8` with adaptive thinking. When a question requires live data it calls the built-in `get_weather` tool (powered by Open-Meteo — no API key required), inspects the result, and decides whether to call more tools before writing a final answer. The loop runs server-side and supports up to 10 consecutive tool calls per turn.
-
-**Logs dashboard**
-Every conversation is stored in an in-memory log and shown in a three-column dashboard: a stats sidebar (total conversations, tool calls, average duration, tool usage breakdown with progress bars), a filterable log list, and a detail pane that shows the user message, each tool call with its input/output, and the assistant reply.
-
-**Dark / light mode**
-System preference is detected on first load. The toggle switches themes without a flash (an inline `<script>` in `<head>` sets the class before React hydrates). All colours are expressed as CSS custom properties so switching is instant and reliable:
-
-| Token | Light | Dark | Contrast (WCAG) |
-|-------|-------|------|-----------------|
-| `--fg-1` | `#0f172a` | `#E8EEFF` | **17.1 : 1 AAA** |
-| `--fg-2` | `#334155` | `#A8B8E0` | **9.9 : 1 AA** |
-| `--fg-3` | `#64748b` | `#8B9CC8` | **4.5 : 1 AA** |
-
----
-
 ## Screenshots
 
 | Dark mode | Light mode |
-|-----------|------------|
-| ![Chat in dark mode](docs/screenshots/chat-dark.png) | ![Chat in light mode](docs/screenshots/chat-light.png) |
+|:---------:|:----------:|
+| ![Stratos dark mode](docs/screenshots/chat-dark.png) | ![Stratos light mode](docs/screenshots/chat-light.png) |
+
+---
+
+## Features
+
+### Tool calling met agentic loop
+De agent gebruikt `claude-opus-4-8` met adaptive thinking. Bij een vraag over het weer roept hij automatisch de `get_weather` tool aan (via [Open-Meteo](https://open-meteo.com/) — geen API key nodig), bekijkt het resultaat, en beslist of hij meer tools nodig heeft voordat hij antwoordt. De loop draait server-side en ondersteunt tot 10 opeenvolgende tool calls per beurt.
+
+### Logs dashboard
+Elke conversatie wordt opgeslagen in een in-memory log en getoond in een driekoloms-dashboard:
+- **Sidebar** — totaaloverzicht (gesprekken, tool calls, gemiddelde duur), tool usage breakdown met progress bars, en filteropties
+- **Loglijst** — chronologische lijst met preview van de gebruikersvraag, timestamp, en tool-badge
+- **Detailpaneel** — volledige weergave met user message, alle tool calls (input + output), en het assistant-antwoord
+
+### Dark / light mode
+Systeemvoorkeur wordt gedetecteerd bij het eerste bezoek. De toggle wisselt direct, zonder flash, dankzij een inline script in `<head>` dat voor React-hydration uitvoert. Alle tekstkleuren zijn CSS custom properties:
+
+| Token | Light | Dark | Contrast |
+|-------|-------|------|---------|
+| `--fg-1` | `#0f172a` | `#E8EEFF` | **17.1 : 1 — WCAG AAA** |
+| `--fg-2` | `#334155` | `#A8B8E0` | **9.9 : 1 — WCAG AA** |
+| `--fg-3` | `#64748b` | `#8B9CC8` | **4.5 : 1 — WCAG AA** |
+
+### Animated gradient mesh
+Het hero-scherm heeft drie langzaam drijvende radial-gradient blobs (blauw, paars, cyaan) als achtergrond, puur via CSS `@keyframes` — geen canvas, geen JS. In light mode subtiel (13% opacity), in dark mode rijker (26%). De blobs verdwijnen zodra het gesprek begint.
 
 ---
 
 ## Setup
 
-### 1. Prerequisites
+### Vereisten
 
 - Node.js ≥ 20
-- An [Anthropic API key](https://console.anthropic.com/)
+- Een [Anthropic API key](https://console.anthropic.com/)
 
-### 2. Environment variables
+### 1. Omgevingsvariabelen
 
-Create `.env.local` in the project root:
+Maak `.env.local` aan in de projectroot:
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-### 3. Run locally
+### 2. Lokaal draaien
 
 ```bash
 npm install
@@ -69,57 +75,58 @@ npm run dev
 # → http://localhost:3000
 ```
 
-### 4. Run with Docker
+### 3. Docker
 
 ```bash
 docker compose up --build
 # → http://localhost:3000
 ```
 
-The `ANTHROPIC_API_KEY` is read from `.env.local` at **runtime** — it is never baked into the image.
-
-To stop the container:
+De `ANTHROPIC_API_KEY` wordt pas ingelezen bij het starten van de container — hij wordt **nooit** in de image gebakken.
 
 ```bash
+# stoppen
 docker compose down
 ```
 
 ---
 
-## Project structure
+## Projectstructuur
 
 ```
 app/
   api/
-    chat/route.ts       # Agentic loop, tool execution, logging
+    chat/route.ts       # Agentic loop, tool uitvoering, logging
     logs/route.ts       # GET / DELETE log store
-  dashboard/page.tsx    # Logs dashboard with sidebar
-  page.tsx              # Chat interface
-  globals.css           # CSS custom properties, glassmorphism utilities
-  layout.tsx            # Nav, ThemeProvider, no-flash theme script
+  dashboard/page.tsx    # Logs dashboard met sidebar
+  page.tsx              # Chat-interface met gradient hero
+  globals.css           # CSS custom properties, glassmorphism, gradient blobs
+  layout.tsx            # Nav, ThemeProvider, favicon, no-flash script
 components/
-  ThemeProvider.tsx     # Context + localStorage persistence
-  ThemeToggle.tsx       # Sun / moon button
+  ThemeProvider.tsx     # Theme context + localStorage persistentie
+  ThemeToggle.tsx       # Zon / maan knop
 lib/
   store.ts              # In-memory log store (globalThis singleton)
   weather.ts            # Open-Meteo geocoding + forecast
 types/
   index.ts              # Message, ToolCall, LogEntry
 public/
-  logo.svg              # Project logo
+  logo.svg              # Stratos logo — gestapelde atmosferische lagen
+docs/
+  screenshots/          # chat-dark.png, chat-light.png
 Dockerfile              # Multi-stage build (deps → builder → runner)
-docker-compose.yml      # Reads ANTHROPIC_API_KEY from .env.local
+docker-compose.yml      # Leest ANTHROPIC_API_KEY uit .env.local
 ```
 
 ---
 
 ## Tech stack
 
-| Layer | Technology |
-|-------|-----------|
+| Laag | Technologie |
+|------|-------------|
 | Framework | [Next.js 15](https://nextjs.org/) (App Router, React 19) |
-| AI | [Anthropic SDK](https://github.com/anthropics/anthropic-sdk-typescript) · model `claude-opus-4-8` |
-| Weather | [Open-Meteo](https://open-meteo.com/) (free, no API key) |
+| AI | [Anthropic SDK](https://github.com/anthropics/anthropic-sdk-typescript) · `claude-opus-4-8` |
+| Weather | [Open-Meteo](https://open-meteo.com/) (gratis, geen API key) |
 | Styling | [Tailwind CSS 3](https://tailwindcss.com/) + CSS custom properties |
-| Language | TypeScript 5 |
-| Container | Docker (multi-stage, `output: 'standalone'`, non-root user) |
+| Taal | TypeScript 5 |
+| Container | Docker multi-stage, `output: 'standalone'`, non-root user |
