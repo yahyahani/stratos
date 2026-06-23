@@ -6,9 +6,9 @@ import type { Message } from '@/types';
 
 const SUGGESTIONS = [
   { icon: '🌧️', text: "What's the weather in Amsterdam?" },
-  { icon: '🌸', text: "How's the weather in Tokyo right now?" },
-  { icon: '🗽', text: 'Tell me about the weather in New York' },
+  { icon: '🕐', text: 'Hoe laat is het nu in Tokyo?' },
   { icon: '🌍', text: 'Compare weather in London and Paris' },
+  { icon: '🗓️', text: 'What time is it in New York and Sydney?' },
 ];
 
 export default function ChatPage() {

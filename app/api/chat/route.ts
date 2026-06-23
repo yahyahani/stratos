@@ -1,31 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { getWeather } from '@/lib/weather';
+import { getTime } from '@/lib/time';
 import { addLog } from '@/lib/store';
 import type { LogEntry, Message, ToolCall } from '@/types';
 import { randomUUID } from 'crypto';
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const WEATHER_TOOL: Anthropic.Tool = {
-  name: 'get_weather',
-  description:
-    'Get current weather conditions for a city. Returns temperature (°C), wind speed (km/h), and a description of the weather.',
-  input_schema: {
-    type: 'object' as const,
-    properties: {
-      city: {
-        type: 'string',
-        description: 'City name, e.g. "Amsterdam", "Tokyo", "New York"',
+const TOOLS: Anthropic.Tool[] = [
+  {
+    name: 'get_weather',
+    description:
+      'Get current weather conditions for a city. Returns temperature (°C), wind speed (km/h), and a description of the weather.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        city: { type: 'string', description: 'City name, e.g. "Amsterdam", "Tokyo", "New York"' },
       },
+      required: ['city'],
     },
-    required: ['city'],
   },
-};
+  {
+    name: 'get_time',
+    description:
+      'Get the current local date and time in any city or timezone. Handles daylight saving time (DST) automatically.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        city: { type: 'string', description: 'City name, e.g. "Tokyo", "New York", "Amsterdam"' },
+      },
+      required: ['city'],
+    },
+  },
+];
 
-const SYSTEM_PROMPT = `You are a helpful AI assistant with access to real-time weather data.
-When users ask about weather, always use the get_weather tool to fetch accurate current data.
-Be conversational and informative. Include practical observations (good day for a walk, bring an umbrella, etc.).`;
+const SYSTEM_PROMPT = `You are Stratos, a helpful AI assistant with access to real-time tools.
+- get_weather: current weather for any city
+- get_time: current local time in any city (DST-aware)
+Always use the appropriate tool when the user asks for live data. Be concise and conversational.`;
 
 export async function POST(req: NextRequest) {
   const { messages }: { messages: Message[] } = await req.json();
@@ -47,7 +60,7 @@ export async function POST(req: NextRequest) {
       model: 'claude-opus-4-8',
       max_tokens: 4096,
       thinking: { type: 'adaptive' },
-      tools: [WEATHER_TOOL],
+      tools: TOOLS,
       system: SYSTEM_PROMPT,
       messages: anthropicMessages,
     });
@@ -73,6 +86,10 @@ export async function POST(req: NextRequest) {
           if (block.name === 'get_weather') {
             const { city } = block.input as { city: string };
             const data = await getWeather(city);
+            output = JSON.stringify(data);
+          } else if (block.name === 'get_time') {
+            const { city } = block.input as { city: string };
+            const data = await getTime(city);
             output = JSON.stringify(data);
           } else {
             output = JSON.stringify({ error: `Unknown tool: ${block.name}` });
